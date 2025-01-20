@@ -1,11 +1,22 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class GeofenceManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class GeofenceEvent : UnityEvent<GeofenceZone>
+    {
+    }
+
+    public GeofenceEvent OnEnter;
+    public GeofenceEvent OnExit;
     public List<GeofenceZone> Geofences = new List<GeofenceZone>();
-    public TMP_Text _TMPText;
+    [SerializeField] private TMP_Text _tmpText;
+
+    private Dictionary<string, bool> _geofenceStates = new Dictionary<string, bool>(); // Track entry state
 
     void Start()
     {
@@ -16,10 +27,10 @@ public class GeofenceManager : MonoBehaviour
         foreach (var geofence in Geofences)
         {
             Debug.Log(geofence.ToString());
-            _TMPText.text += geofence + "\n";
+            _tmpText.text += geofence + "\n";
         }
     }
-    
+
     void Update()
     {
         foreach (var geofence in Geofences)
@@ -31,14 +42,31 @@ public class GeofenceManager : MonoBehaviour
                 geofence.Longitude
             );
 
-            if (distance <= geofence.Radius)
+            bool isInside = distance <= geofence.Radius;
+
+            // Check for entry/exit
+            if (isInside && !_geofenceStates[geofence.Name])
             {
-                Debug.Log($"Inside geofence: {geofence.Name}");
+                _geofenceStates[geofence.Name] = true;
+                OnEnterGeofence(geofence);
             }
-            else
+            else if (!isInside && _geofenceStates[geofence.Name])
             {
-                Debug.Log($"Outside geofence: {geofence.Name}");
+                _geofenceStates[geofence.Name] = false;
+                OnExitGeofence(geofence);
             }
         }
+    }
+
+    private void OnEnterGeofence(GeofenceZone geofence)
+    {
+        Debug.Log($"Entered geofence: {geofence.Name}");
+        OnEnter?.Invoke(geofence); // Trigger event
+    }
+
+    private void OnExitGeofence(GeofenceZone geofence)
+    {
+        Debug.Log($"Exited geofence: {geofence.Name}");
+        OnExit?.Invoke(geofence); // Trigger event
     }
 }

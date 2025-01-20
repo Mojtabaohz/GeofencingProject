@@ -1090,8 +1090,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7a54bc85fc65b45a8f6f34c2eada8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExit:
+    m_PersistentCalls:
+      m_Calls: []
   Geofences: []
-  _TMPText: {fileID: 721079421}
+  _tmpText: {fileID: 721079421}
 --- !u!4 &2028070552
 Transform:
   m_ObjectHideFlags: 0
