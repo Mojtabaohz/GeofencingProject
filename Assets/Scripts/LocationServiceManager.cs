@@ -14,6 +14,7 @@ public class LocationServiceManager : MonoBehaviour
     public TMP_Text LocationText;
     void Start()
     {
+        Input.location.Start();
         StartCoroutine(StartLocationService());
     }
 
@@ -32,9 +33,6 @@ public class LocationServiceManager : MonoBehaviour
             Debug.LogError("Location services are not enabled by the user.");
             yield break;
         }
-
-        // Start the location service
-        Input.location.Start();
 
         // Wait until the service initializes
         int maxWait = 20;
