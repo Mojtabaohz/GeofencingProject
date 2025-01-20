@@ -16,7 +16,7 @@ public class GeofenceManager : MonoBehaviour
         foreach (var geofence in Geofences)
         {
             Debug.Log(geofence.ToString());
-            _TMPText.text += geofence.ToString();
+            _TMPText.text += geofence + "\n";
         }
     }
     
