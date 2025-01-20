@@ -19,4 +19,26 @@ public class GeofenceManager : MonoBehaviour
             _TMPText.text += geofence.ToString();
         }
     }
+    
+    void Update()
+    {
+        foreach (var geofence in Geofences)
+        {
+            double distance = GeofenceUtils.CalculateDistance(
+                LocationServiceManager.Instance.Latitude,
+                LocationServiceManager.Instance.Longitude,
+                geofence.Latitude,
+                geofence.Longitude
+            );
+
+            if (distance <= geofence.Radius)
+            {
+                Debug.Log($"Inside geofence: {geofence.Name}");
+            }
+            else
+            {
+                Debug.Log($"Outside geofence: {geofence.Name}");
+            }
+        }
+    }
 }

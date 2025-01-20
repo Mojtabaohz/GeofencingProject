@@ -1,8 +1,9 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Wintor.Util;
 
-public class LocationServiceManager : MonoBehaviour
+public class LocationServiceManager : MonoSingleton<LocationServiceManager>
 {
     public bool IsLocationEnabled { get; private set; } = false;
 
